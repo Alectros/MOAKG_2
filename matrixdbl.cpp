@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "matrixdbl.h"
 
 
 int MatrixDbl::cols() const

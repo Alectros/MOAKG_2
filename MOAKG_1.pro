@@ -11,15 +11,19 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    matrix.cpp \
+    matrixdbl.cpp \
+    matrixdbl3x3.cpp \
     model2drendering.cpp \
-    modelshell.cpp
+    modelshell.cpp \
+    vectordbl.cpp
 
 HEADERS += \
     mainwindow.h \
-    matrix.h \
+    matrixdbl.h \
+    matrixdbl3x3.h \
     model2drendering.h \
-    modelshell.h
+    modelshell.h \
+    vectordbl.h
 
 FORMS += \
     mainwindow.ui
