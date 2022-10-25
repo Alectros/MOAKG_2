@@ -36,6 +36,12 @@ VectorDbl ModelShell::point(const int ind) const
     return m_points[ind];
 }
 
+VectorDbl ModelShell::transformedPoint(const int ind) const
+{
+    assert(ind >= 0 && ind < m_points.size());
+    return m_transform * m_points[ind];
+}
+
 VectorDbl &ModelShell::point(const int ind)
 {
     assert(ind >= 0 && ind < m_points.size());
@@ -71,6 +77,10 @@ int ModelShell::edgesSize() const
 
 void ModelShell::applyTransform(const MatrixDbl3x3 &matrix)
 {
-    for(int i = 0; i < m_points.size(); i++)
-        m_points[i] = matrix * m_points[i];
+    m_transform = matrix * m_transform;
+}
+
+MatrixDbl3x3 ModelShell::transform() const
+{
+    return m_transform;
 }
