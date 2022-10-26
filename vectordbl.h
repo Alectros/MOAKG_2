@@ -11,6 +11,10 @@ public:
     VectorDbl(const int size, const Type type = Type::DefaultValue, const double defaultValue = 0)
         : MatrixDbl(size, 1, type, defaultValue) {}
     VectorDbl(const int size, const double *values) : MatrixDbl(size, 1, values){};
+    VectorDbl(const MatrixDbl &mx) : MatrixDbl(mx.rows(), 1) {
+        for(int i = 0; i < mx.rows(); i++)
+            m_value[i] = mx(i, 0);
+    };
 
     double operator()(const int row, const int col) const = delete;
     double& operator()(const int row, const int col) = delete;
@@ -57,6 +61,12 @@ public:
     }
 
 };
+
+inline VectorDbl operator-(const VectorDbl &v1, const VectorDbl &v2)
+{
+    const MatrixDbl result = MatrixDbl(v1) - MatrixDbl(v2);
+    return VectorDbl(result);
+}
 
 inline VectorDbl operator*(const MatrixDbl &mx, const VectorDbl v)
 {

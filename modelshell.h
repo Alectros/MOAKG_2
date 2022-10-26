@@ -23,7 +23,8 @@ public:
     std::pair<int, int> edge(const int ind) const;
     std::pair<int, int>& edge(const int ind);
     int edgesSize() const;
-    void applyTransform(const MatrixDbl3x3 &matrix);
+    void addTransform(const MatrixDbl3x3 &matrix);
+    void applyTransform();
     MatrixDbl3x3 transform() const;
 protected:
     std::vector<VectorDbl3> m_points;

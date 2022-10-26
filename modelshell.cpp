@@ -75,9 +75,15 @@ int ModelShell::edgesSize() const
     return m_edges.size();
 }
 
-void ModelShell::applyTransform(const MatrixDbl3x3 &matrix)
+void ModelShell::addTransform(const MatrixDbl3x3 &matrix)
 {
     m_transform = matrix * m_transform;
+}
+
+void ModelShell::applyTransform()
+{
+    for(int i = 0; i < m_points.size(); i++)
+        m_points[i] = m_transform * m_points[i];
 }
 
 MatrixDbl3x3 ModelShell::transform() const
