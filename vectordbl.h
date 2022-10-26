@@ -27,16 +27,6 @@ public:
         return (*this)[ind];
     }
 
-    VectorDbl operator*(const MatrixDbl &another) const
-    {
-        assert(m_rows == another.rows());
-        VectorDbl result(m_rows, Type::DefaultValue, 0.0);
-        for(int row = 0; row < m_rows; row++)
-                for(int i = 0; i < m_cols; i++)
-                    result(row) += (*this)(i) * another(i, row);
-        return result;
-    }
-
     VectorDbl transposed() const = delete;
     void transpose() = delete;
 
@@ -67,5 +57,25 @@ public:
     }
 
 };
+
+inline VectorDbl operator*(const MatrixDbl &mx, const VectorDbl v)
+{
+    assert(v.rows() == mx.rows());
+    VectorDbl result(v.rows(), MatrixDbl::Type::DefaultValue, 0.0);
+    for(int row = 0; row < v.rows(); row++)
+        for(int i = 0; i < mx.cols(); i++)
+            result(row) += v(i) * mx(row, i);
+    return result;
+}
+
+inline VectorDbl operator*(const VectorDbl v, const MatrixDbl &mx)
+{
+    assert(v.rows() == mx.rows());
+    VectorDbl result(v.rows(), MatrixDbl::Type::DefaultValue, 0.0);
+    for(int col = 0; col < v.rows(); col++)
+        for(int i = 0; i < mx.rows(); i++)
+            result(col) += v(i) * mx(i, col);
+    return result;
+}
 
 #endif // VECTORDBL_H

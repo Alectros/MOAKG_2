@@ -12,7 +12,7 @@ public:
     VectorDbl3 pxlToWorld(const VectorDbl3 &xP) const;
 
     int m_width = 700;
-    int m_height = 500;
+    int m_height = 700;
     int m_offsetX = 0;
     int m_offsetY = 0;
     double m_L = -1;

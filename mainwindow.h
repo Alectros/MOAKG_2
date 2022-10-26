@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "scene2d.h"
+#include "modelshell.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,7 +18,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void execDialog();
+    void importModel();
+
 private:
     Ui::MainWindow *ui;
+    Scene2D *sceneDialog = new Scene2D(this);
+    std::vector<ModelShell> models;
+
 };
 #endif // MAINWINDOW_H

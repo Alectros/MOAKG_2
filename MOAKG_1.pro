@@ -16,6 +16,7 @@ SOURCES += \
     matrixdbl3x3.cpp \
     model2drendering.cpp \
     modelshell.cpp \
+    scene2d.cpp \
     vectordbl.cpp
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     model2drendering.h \
     modelShellImport.h \
     modelshell.h \
+    scene2d.h \
     vectordbl.h
 
 FORMS += \

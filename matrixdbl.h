@@ -202,6 +202,8 @@ public:
 
     int cols() const;
     int rows() const;
+    double *value() const;
+
 protected:
     double *m_value = nullptr;
     int m_cols = 0;

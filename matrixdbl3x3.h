@@ -11,6 +11,8 @@ class MatrixDbl3x3 : public MatrixDbl
 {
 public:
     MatrixDbl3x3() : MatrixDbl(3, 3, Type::Unit) {}
+    MatrixDbl3x3(double *values) : MatrixDbl(3, 3, values) {}
+    MatrixDbl3x3(const MatrixDbl &mx) : MatrixDbl(3, 3, mx.value()) {}
 
     static MatrixDbl3x3 unit()
     {
@@ -57,7 +59,8 @@ class VectorDbl3 : public VectorDbl
 {
 public:
     VectorDbl3() : VectorDbl(3) {};
-    VectorDbl3(const double *values) : VectorDbl(3, values){};
+    VectorDbl3(const double *values) : VectorDbl(3, values) {};
+    VectorDbl3(const VectorDbl &v) : VectorDbl(3, v.value()) {};
     VectorDbl3(const double x, const double y, const double z) : VectorDbl(3)
     {
         m_value[0] = x;
@@ -67,22 +70,22 @@ public:
 
 };
 
-MatrixDbl3x3 operator*(const MatrixDbl3x3 &first, const MatrixDbl3x3 &second)
+inline MatrixDbl3x3 operator*(const MatrixDbl3x3 &mx1, const MatrixDbl3x3 &mx2)
 {
-    MatrixDbl result = first * second;
-    return *dynamic_cast<MatrixDbl3x3*>(&result);
+    const MatrixDbl result = MatrixDbl(mx1) * MatrixDbl(mx2);
+    return MatrixDbl3x3(result);
 }
 
-VectorDbl3 operator*(const MatrixDbl3x3 &mx, const VectorDbl3 v)
+inline VectorDbl3 operator*(const MatrixDbl3x3 &mx, const VectorDbl3 v)
 {
-    VectorDbl result = mx * v;
-    return *dynamic_cast<VectorDbl3*>(&result);
+    const VectorDbl result = MatrixDbl(mx) * VectorDbl(v);
+    return VectorDbl3(result);
 }
 
-VectorDbl3 operator*(const VectorDbl3 v, const MatrixDbl3x3 &mx)
+inline VectorDbl3 operator*(const VectorDbl3 v, const MatrixDbl3x3 &mx)
 {
-    VectorDbl result = v * mx;
-    return *dynamic_cast<VectorDbl3*>(&result);
+    const VectorDbl result = VectorDbl(v) * MatrixDbl(mx);
+    return VectorDbl3(result);
 }
 
 #endif // MATRIXDBL3X3_H

@@ -30,19 +30,19 @@ std::vector<VectorDbl3> ModelShell::points() const
     return m_points;
 }
 
-VectorDbl ModelShell::point(const int ind) const
+VectorDbl3 ModelShell::point(const int ind) const
 {
     assert(ind >= 0 && ind < m_points.size());
     return m_points[ind];
 }
 
-VectorDbl ModelShell::transformedPoint(const int ind) const
+VectorDbl3 ModelShell::transformedPoint(const int ind) const
 {
     assert(ind >= 0 && ind < m_points.size());
     return m_transform * m_points[ind];
 }
 
-VectorDbl &ModelShell::point(const int ind)
+VectorDbl3 &ModelShell::point(const int ind)
 {
     assert(ind >= 0 && ind < m_points.size());
     return m_points[ind];

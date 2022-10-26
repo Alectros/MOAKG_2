@@ -15,9 +15,9 @@ public:
     bool addEdge(const int indE1, const int indE2);
 
     std::vector<VectorDbl3> points() const;
-    VectorDbl point(const int ind) const;
-    VectorDbl transformedPoint(const int ind) const;
-    VectorDbl& point(const int ind);
+    VectorDbl3 point(const int ind) const;
+    VectorDbl3 transformedPoint(const int ind) const;
+    VectorDbl3& point(const int ind);
     int pointsSize() const;
     std::vector<std::pair<int, int> > edges() const;
     std::pair<int, int> edge(const int ind) const;

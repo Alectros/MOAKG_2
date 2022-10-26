@@ -6,35 +6,64 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1246</width>
-    <height>739</height>
+    <width>413</width>
+    <height>162</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="Model2DRendering" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1091</width>
-      <height>691</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="buttonImportModel">
     <property name="geometry">
      <rect>
-      <x>1100</x>
-      <y>10</y>
-      <width>131</width>
+      <x>20</x>
+      <y>70</y>
+      <width>91</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Import Model</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ModelName:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelmModelName">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonRun">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>70</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RunButton</string>
     </property>
    </widget>
   </widget>
@@ -43,21 +72,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1246</width>
+     <width>413</width>
      <height>22</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Model2DRendering</class>
-   <extends>QWidget</extends>
-   <header location="global">model2drendering.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
