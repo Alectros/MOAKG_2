@@ -34,7 +34,8 @@ private:
     std::vector<ModelShell*> m_models;
     bool m_isMoving = false;
     QPoint m_lastPos;
-
+    ModelShell m_axes;
+    void updateAxes();
 };
 
 #endif // SCENE2D_H

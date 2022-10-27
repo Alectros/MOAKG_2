@@ -8,7 +8,7 @@
 class ModelShell
 {
 public:
-    ModelShell();
+    ModelShell() = default;
 
     void clear();
     void addPoint(const double x, const double y);
@@ -26,10 +26,13 @@ public:
     void addTransform(const MatrixDbl3x3 &matrix);
     void applyTransform();
     MatrixDbl3x3 transform() const;
+    void clearTransform();
+    VectorDbl3 middlePoint() const;
 protected:
     std::vector<VectorDbl3> m_points;
     std::vector<std::pair<int, int>> m_edges;
     MatrixDbl3x3 m_transform;
+    VectorDbl3 m_middlePoint;
 };
 
 #endif // MODELSHELL_H

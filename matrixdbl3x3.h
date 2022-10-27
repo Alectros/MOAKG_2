@@ -67,6 +67,17 @@ public:
         m_value[1] = y;
         m_value[2] = z;
     };
+    double x() const
+    {
+        assert(std::abs(m_value[2]) > std::numeric_limits<double>::epsilon());
+        return m_value[0] / m_value[2];
+    }
+
+    double y() const
+    {
+        assert(std::abs(m_value[2]) > std::numeric_limits<double>::epsilon());
+        return m_value[1] / m_value[2];
+    }
 
 };
 
@@ -91,6 +102,12 @@ inline VectorDbl3 operator*(const VectorDbl3 v, const MatrixDbl3x3 &mx)
 inline VectorDbl3 operator-(const VectorDbl3 &v1, const VectorDbl3 v2)
 {
     const VectorDbl result = VectorDbl(v1) - VectorDbl(v2);
+    return VectorDbl3(result);
+}
+
+inline VectorDbl3 operator+(const VectorDbl3 &v1, const VectorDbl3 v2)
+{
+    const VectorDbl result = VectorDbl(v1) + VectorDbl(v2);
     return VectorDbl3(result);
 }
 

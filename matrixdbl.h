@@ -200,9 +200,20 @@ public:
             m_value[i] = matrix[i];
     }
 
-    int cols() const;
-    int rows() const;
-    double *value() const;
+    int cols() const
+    {
+        return m_cols;
+    }
+
+    int rows() const
+    {
+        return m_rows;
+    }
+
+    double *value() const
+    {
+        return m_value;
+    }
 
 protected:
     double *m_value = nullptr;

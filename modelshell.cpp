@@ -1,10 +1,5 @@
 #include "modelshell.h"
 
-ModelShell::ModelShell()
-{
-
-}
-
 void ModelShell::clear()
 {
     m_points.clear();
@@ -14,6 +9,8 @@ void ModelShell::clear()
 void ModelShell::addPoint(const double x, const double y)
 {
     m_points.push_back({x, y, 1});
+    m_middlePoint = m_middlePoint + m_points[m_points.size() - 1];
+    m_middlePoint[2] = 1;
 }
 
 bool ModelShell::addEdge(const int indE1, const int indE2)
@@ -89,4 +86,16 @@ void ModelShell::applyTransform()
 MatrixDbl3x3 ModelShell::transform() const
 {
     return m_transform;
+}
+
+void ModelShell::clearTransform()
+{
+    m_transform = MatrixDbl3x3();
+}
+
+VectorDbl3 ModelShell::middlePoint() const
+{
+    if (m_points.size() == 0)
+        return VectorDbl3();
+    return VectorDbl3(m_middlePoint.x() / m_points.size(), m_middlePoint.y() / m_points.size(), 1);
 }

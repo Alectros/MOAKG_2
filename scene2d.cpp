@@ -11,16 +11,17 @@ Scene2D::Scene2D(QWidget *parent) : QDialog(parent)
 void Scene2D::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.setPen(QPen(Qt::black));
+    QPen pen(Qt::black);
+    pen.setWidth(2);
+    painter.setPen(pen);
 
-    QPoint m_cursorPosition(0, 0);
     for(int modelInd = 0; modelInd < m_models.size(); modelInd++) {
         for(int edgeInd = 0; edgeInd < m_models[modelInd]->edgesSize(); edgeInd++) {
-            const int edge1 = m_models[modelInd]->edge(edgeInd).first;
-            const int edge2 = m_models[modelInd]->edge(edgeInd).second;
-            auto pPxl1 = m_camera.worldToPxl(m_models[modelInd]->transformedPoint(edge1));
-            auto pPxl2 = m_camera.worldToPxl(m_models[modelInd]->transformedPoint(edge2));
-            painter.drawLine(pPxl1[0], pPxl1[1], pPxl2[0], pPxl2[1]);
+            const int pointInd1 = m_models[modelInd]->edge(edgeInd).first;
+            const int pointInd2 = m_models[modelInd]->edge(edgeInd).second;
+            const VectorDbl3 pPxl1 = m_camera.worldToPxl(m_models[modelInd]->transformedPoint(pointInd1));
+            const VectorDbl3 pPxl2 = m_camera.worldToPxl(m_models[modelInd]->transformedPoint(pointInd2));
+            painter.drawLine(pPxl1.x(), pPxl1.y(), pPxl2.x(), pPxl2.y());
         }
     }
 }
@@ -32,8 +33,8 @@ void Scene2D::resizeEvent(QResizeEvent *event)
             / (static_cast<double>(newSize.height()) * event->oldSize().width());
     m_camera.m_height = newSize.height();
     m_camera.m_width = newSize.width();
-    m_camera.m_R *= relativeAr;
-    m_camera.m_L *= relativeAr;
+    m_camera.m_T /= relativeAr;
+    m_camera.m_B /= relativeAr;
 }
 
 void Scene2D::wheelEvent(QWheelEvent *event)
@@ -70,7 +71,7 @@ void Scene2D::mouseMoveEvent(QMouseEvent *event)
                 ) - m_camera.pxlToWorld(
                 {static_cast<double>(m_lastPos.x()),
                  static_cast<double>(m_lastPos.y()),
-                 1.0}
+                 0.0}
                 );
 
     for(int i =0; i < m_models.size(); i++)
@@ -86,8 +87,13 @@ void Scene2D::keyPressEvent(QKeyEvent *event)
         int angle = 10;
         if (event->key() == Qt::Key_Minus)
             angle *= -1;
-        for(int i =0; i < m_models.size(); i++)
-            m_models[i]->addTransform(MatrixDbl3x3::rotation(angle));
+        for(int i =0; i < m_models.size(); i++) {
+            const VectorDbl3 middlePoint = m_models[i]->transform() * m_models[i]->middlePoint();
+            m_models[i]->addTransform(
+                        MatrixDbl3x3::translation(middlePoint[0], middlePoint[1])
+                    * MatrixDbl3x3::rotation(angle)
+                    * MatrixDbl3x3::translation(-middlePoint[0], -middlePoint[1]));
+        }
         update();
     }
 }
@@ -113,4 +119,9 @@ Camera2D Scene2D::camera() const
 void Scene2D::setCamera(const Camera2D &camera)
 {
     m_camera = camera;
+}
+
+void Scene2D::updateAxes()
+{
+
 }
