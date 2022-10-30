@@ -25,17 +25,15 @@ public:
     void keyPressEvent(QKeyEvent *event) override;
 
     void clear();
-    bool addModel(ModelShell* model);
+    void addModel(const ModelShell &model);
     Camera2D camera() const;
     void setCamera(const Camera2D &camera);
 
 private:
     Camera2D m_camera;
-    std::vector<ModelShell*> m_models;
+    std::vector<ModelShell> m_models;
     bool m_isMoving = false;
     QPoint m_lastPos;
-    ModelShell m_axes;
-    void updateAxes();
 };
 
 #endif // SCENE2D_H

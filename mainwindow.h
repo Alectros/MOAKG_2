@@ -25,7 +25,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Scene2D *sceneDialog = new Scene2D(this);
-    std::vector<ModelShell> models;
 
 };
 #endif // MAINWINDOW_H

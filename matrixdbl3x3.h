@@ -1,9 +1,10 @@
 #ifndef MATRIXDBL3X3_H
 #define MATRIXDBL3X3_H
 
+#include <cmath>
+
 #include "matrixdbl.h"
 #include "vectordbl.h"
-#include <cmath>
 
 const double DEG_TO_RAD = M_PI / 180.0;
 
