@@ -100,6 +100,18 @@ inline VectorDbl3 operator*(const VectorDbl3 v, const MatrixDbl3x3 &mx)
     return VectorDbl3(result);
 }
 
+inline VectorDbl3 operator*(const VectorDbl3 v, const double &d)
+{
+    const VectorDbl result = VectorDbl(v) * d;
+    return VectorDbl3(result);
+}
+
+inline VectorDbl3 operator*(const double &d, const VectorDbl3 v)
+{
+    const VectorDbl result = VectorDbl(v) * d;
+    return VectorDbl3(result);
+}
+
 inline VectorDbl3 operator-(const VectorDbl3 &v1, const VectorDbl3 v2)
 {
     const VectorDbl result = VectorDbl(v1) - VectorDbl(v2);

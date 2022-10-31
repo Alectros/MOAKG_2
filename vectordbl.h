@@ -55,12 +55,25 @@ public:
     void normilize()
     {
         const double l = length();
-        assert(std::abs(l) < std::numeric_limits<double>::epsilon());
+        assert(std::abs(l) > std::numeric_limits<double>::epsilon());
         for(int i = 0; i < m_rows; i++)
             m_value[i] /= l;
     }
 
 };
+
+inline VectorDbl operator*(const VectorDbl &v, const double &number)
+{
+    const MatrixDbl result = MatrixDbl(v) * number;
+    return VectorDbl(result);
+}
+
+inline VectorDbl operator*(const double &number, const VectorDbl &v)
+{
+    const MatrixDbl result = MatrixDbl(v) * number;
+    return VectorDbl(result);
+}
+
 
 inline VectorDbl operator-(const VectorDbl &v1, const VectorDbl &v2)
 {

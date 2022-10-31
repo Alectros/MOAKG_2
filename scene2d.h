@@ -1,10 +1,11 @@
 #ifndef SCENE2D_H
 #define SCENE2D_H
 
-#include <QWidget>
-
-#include <QDialog>
 #include <vector>
+
+#include <QWidget>
+#include <QDialog>
+#include <QAction>
 
 #include "camera2d.h"
 #include "modelshell.h"
@@ -22,7 +23,6 @@ public:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
 
     void clear();
     void addModel(const ModelShell &model);
@@ -34,6 +34,19 @@ private:
     std::vector<ModelShell> m_models;
     bool m_isMoving = false;
     QPoint m_lastPos;
+
+    QAction *m_actionRotationLeft = nullptr;
+    QAction *m_actionRotationRight = nullptr;
+    QAction *m_actionRelativeScaleXPos = nullptr;
+    QAction *m_actionRelativeScaleYPos = nullptr;
+    QAction *m_actionRelativeScaleXNeg = nullptr;
+    QAction *m_actionRelativeScaleYNeg = nullptr;
+
+    void rotateFigureLeft();
+    void rotateFigureRight();
+    void rotateFigure(const double &angle);
+    void scaleRelativeController();
+    void scaleRelativeFirstEdge(const double coeffX, const double coeffY);
 };
 
 #endif // SCENE2D_H
