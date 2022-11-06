@@ -1,12 +1,8 @@
-# MOAKG_1
-Первая лабораторная по предмету математические основы компьютерной графики
+# MOAKG_2
+Вторая лабораторная по предмету математические основы компьютерной графики, за основу взята [первая лабораторная](https://github.com/Alectros/MOAKG_1) 
 
-Задание: Реализовать задание, хранение, визуализацию двумерной каркасной модели и применение к ней аффинных преобразований.
+Задание: Реализовать задание, хранение, визуализацию трехмерной каркасной модели и применение к ней аффинных преобразований.
 
-Дополнительное задание: Масштабирование модели относительно первого ребра.
+The second task on the subject of mathematical foundations of computer graphics, based on [first task](https://github.com/Alectros/MOAKG_1) 
 
-The first task on the subject of mathematical foundations of computer graphics
-
-Task: To implement the import, storage, visualization of a two-dimensional wireframe model and the application of affine transformations to it.
-
-Additional task: Scaling the model relative to the first edge.
+Task: To implement the import, storage, visualization of a three-dimensional wireframe model and the application of affine transformations to it.
