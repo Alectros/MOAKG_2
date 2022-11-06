@@ -129,7 +129,7 @@ void Scene2D::clear()
     m_models.clear();
 }
 
-void Scene2D::addModel(const ModelShell &model)
+void Scene2D::addModel(const ModelShell3D &model)
 {
     if (m_models.size() == 0)
         m_models.push_back(model);

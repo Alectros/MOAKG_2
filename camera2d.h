@@ -1,7 +1,7 @@
 #ifndef CAMERA2D_H
 #define CAMERA2D_H
 
-#include "matrixdbl3x3.h"
+#include "affinetools2d.h"
 
 class Camera2D
 {

@@ -12,16 +12,17 @@ SOURCES += \
     camera2d.cpp \
     main.cpp \
     mainwindow.cpp \
-    modelshell.cpp \
+    modelshell3d.cpp \
     scene2d.cpp
 
 HEADERS += \
+    affinetools2d.h \
+    affinetools3d.h \
     camera2d.h \
     mainwindow.h \
     matrixdbl.h \
-    matrixdbl3x3.h \
     modelShellImport.h \
-    modelshell.h \
+    modelshell3d.h \
     scene2d.h \
     vectordbl.h
 

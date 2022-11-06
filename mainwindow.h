@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include "scene2d.h"
-#include "modelshell.h"
+#include "modelshell3d.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

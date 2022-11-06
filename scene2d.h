@@ -8,7 +8,7 @@
 #include <QAction>
 
 #include "camera2d.h"
-#include "modelshell.h"
+#include "modelshell3d.h"
 
 class Scene2D : public QDialog
 {
@@ -25,13 +25,13 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
 
     void clear();
-    void addModel(const ModelShell &model);
+    void addModel(const ModelShell3D &model);
     Camera2D camera() const;
     void setCamera(const Camera2D &camera);
 
 private:
     Camera2D m_camera;
-    std::vector<ModelShell> m_models;
+    std::vector<ModelShell3D> m_models;
     bool m_isMoving = false;
     QPoint m_lastPos;
 

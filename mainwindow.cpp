@@ -36,7 +36,7 @@ void MainWindow::importModel()
     }
 
     QString errors;
-    ModelShell model;
+    ModelShell3D model;
     if (!importModelShellFromFile(filename, model, errors)) {
         QMessageBox::warning(this, "Import Error", "Couldn't import model");
         return;

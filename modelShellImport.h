@@ -5,25 +5,32 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "modelshell.h"
+#include "modelshell3d.h"
+
+
+#include <QString>
+#include <QFile>
+#include <QTextStream>
+
+#include "modelshell3d.h"
 
 //Структура файла - File structure
 //количество точек - Points count
-//точки с 3-мя координатами - Points with 3 coordinates
+//точки с 4-мя координатами - Points with 4 coordinates
 //количество ребер - Edges count
 //ребра (нумерация с 1) - Edges (begins from 1)
 //Пример - Example
 //4
-//0 0 0
-//1 0 0
-//0 1 1
-//0 1 0
+//0 0 0 1
+//1 0 0 1
+//0 1 1 1
+//0 1 0 1
 //3
 //1 2
 //2 3
 //3 4
 
-bool importModelShellFromFile(const QString &filename, ModelShell &model, QString &errors)
+bool importModelShellFromFile(const QString &filename, ModelShell3D &model, QString &errors)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -35,9 +42,9 @@ bool importModelShellFromFile(const QString &filename, ModelShell &model, QStrin
     stream >> sP;
     model.clear();
     for(int i = 0; i < sP; i++) {
-        double x, y, z;
-        stream >> x >> y >> z;
-        model.addPoint(x / z, y / z);
+        double x, y, z, w;
+        stream >> x >> y >> z >> w;
+        model.addPoint(x / w, y / w, z / w);
     }
     stream >> sE;
     for(int i = 0; i < sP; i++) {

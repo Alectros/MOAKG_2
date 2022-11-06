@@ -1,12 +1,10 @@
-#ifndef MATRIXDBL3X3_H
-#define MATRIXDBL3X3_H
+#ifndef AFFINETOOLS2D_H
+#define AFFINETOOLS2D_H
 
 #include <cmath>
 
 #include "matrixdbl.h"
 #include "vectordbl.h"
-
-const double DEG_TO_RAD = M_PI / 180.0;
 
 class MatrixDbl3x3 : public MatrixDbl
 {
@@ -31,6 +29,7 @@ public:
 
     static MatrixDbl3x3 rotation(const double angle)
     {
+        const double DEG_TO_RAD = M_PI / 180.0;
         MatrixDbl3x3 mx;
         mx(0, 0) = std::cos(angle * DEG_TO_RAD);
         mx(0, 1) = -std::sin(angle * DEG_TO_RAD);
@@ -128,4 +127,4 @@ inline VectorDbl3 operator+(const VectorDbl3 &v1, const VectorDbl3 v2)
     return VectorDbl3(result);
 }
 
-#endif // MATRIXDBL3X3_H
+#endif // AFFINETOOLS2D_H
