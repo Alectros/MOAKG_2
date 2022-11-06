@@ -15,6 +15,7 @@ public:
         for(int i = 0; i < mx.rows(); i++)
             m_value[i] = mx(i, 0);
     };
+    VectorDbl(const int size, const std::initializer_list<double> &values) : MatrixDbl(size, 1, values) {};
 
     double operator()(const int row, const int col) const = delete;
     double& operator()(const int row, const int col) = delete;
@@ -74,10 +75,15 @@ inline VectorDbl operator*(const double &number, const VectorDbl &v)
     return VectorDbl(result);
 }
 
-
 inline VectorDbl operator-(const VectorDbl &v1, const VectorDbl &v2)
 {
     const MatrixDbl result = MatrixDbl(v1) - MatrixDbl(v2);
+    return VectorDbl(result);
+}
+
+inline VectorDbl operator+(const VectorDbl &v1, const VectorDbl &v2)
+{
+    const MatrixDbl result = MatrixDbl(v1) + MatrixDbl(v2);
     return VectorDbl(result);
 }
 

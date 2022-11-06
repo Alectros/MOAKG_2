@@ -16,7 +16,7 @@ class Scene2D : public QDialog
 public:
     Scene2D(QWidget *parent = nullptr);
 
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent*) override;
 
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;

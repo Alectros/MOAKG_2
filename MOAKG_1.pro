@@ -12,11 +12,8 @@ SOURCES += \
     camera2d.cpp \
     main.cpp \
     mainwindow.cpp \
-    matrixdbl.cpp \
-    matrixdbl3x3.cpp \
     modelshell.cpp \
-    scene2d.cpp \
-    vectordbl.cpp
+    scene2d.cpp
 
 HEADERS += \
     camera2d.h \

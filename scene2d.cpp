@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <QFormLayout>
+#include <QLabel>
 #include <QPainter>
 #include <QResizeEvent>
 
@@ -27,6 +29,15 @@ Scene2D::Scene2D(QWidget *parent) : QDialog(parent)
     m_actionRelativeScaleYNeg->setShortcut(Qt::Key_Down);
     addAction(m_actionRelativeScaleYNeg);
 
+    QFormLayout *layout = new QFormLayout;
+    layout->addRow("Move the mouse with hold button", new QLabel("Dragging the object"));
+    layout->addRow("Mouse wheel rotation", new QLabel("Scaling the object"));
+    layout->addRow("+", new QLabel("Rotate object 10 degrees counterclockwise"));
+    layout->addRow("-", new QLabel("Rotate object 10 degrees clockwise"));
+    layout->addRow("UpArrow, DownArrow", new QLabel("Scale object along red edge"));
+    layout->addRow("LeftArrow, RightArrow", new QLabel("Scale object perpendicular red edge"));
+
+    setLayout(layout);
 
     connect(m_actionRotationLeft, &QAction::triggered, this, &Scene2D::rotateFigureLeft);
     connect(m_actionRotationRight, &QAction::triggered, this, &Scene2D::rotateFigureRight);
@@ -36,7 +47,7 @@ Scene2D::Scene2D(QWidget *parent) : QDialog(parent)
     connect(m_actionRelativeScaleYNeg, &QAction::triggered, this, &Scene2D::scaleRelativeController);
 }
 
-void Scene2D::paintEvent(QPaintEvent *event)
+void Scene2D::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     QPen pen(Qt::black);
@@ -186,24 +197,25 @@ void Scene2D::scaleRelativeFirstEdge(const double coeffX, const double coeffY)
         return;
     v.normilize();
 
-    MatrixDbl3x3 posRotate, negRotate;
-
     //! Нормализированный вектор может быть записан следующим образом
     //! v(sin(a), cos(a), 0), где a угол между осью y и гранью модели проходящей через начало координат
     //! Чтобы не тратить время на вычисления тангенса, а также косинусов и синусов при вызове MatrixDbl3x3::rotation(angle), записал их напрямую
     //!
     //! the normalized vector can be written as follows
     //! v(sin(a), cos(a), 0), where a is the angle between the y-axis and the first edge of the model passing through the origin
-    //! So to prevent time consuming calculations of tg, cos and sin when calling MatrixDbl3x3::rotation(angle), i writo them directly
-
-    posRotate(0, 0) = v[1];
-    posRotate(0, 1) = -v[0];
-    posRotate(1, 0) = v[0];
-    posRotate(1, 1) = v[1];
-    negRotate(0, 0) = v[1];
-    negRotate(0, 1) = v[0];
-    negRotate(1, 0) = -v[0];
-    negRotate(1, 1) = v[1];
+    //! So to prevent time consuming calculations of tg, cos and sin when calling MatrixDbl3x3::rotation(angle), i wrote them directly
+    const MatrixDbl3x3 posRotate =
+    {
+        v[1], -v[0], 0,
+        v[0],  v[1], 0,
+           0,     0, 1
+    },
+            negRotate =
+    {
+        v[1],  v[0], 0,
+       -v[0],  v[1], 0,
+           0,     0, 1
+    };
 
     const VectorDbl3 rPoint = (m_models[0].transformedPoint(pointInd1) + m_models[0].transformedPoint(pointInd2)) * 0.5;
 

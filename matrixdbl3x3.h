@@ -14,6 +14,7 @@ public:
     MatrixDbl3x3() : MatrixDbl(3, 3, Type::Unit) {}
     MatrixDbl3x3(double *values) : MatrixDbl(3, 3, values) {}
     MatrixDbl3x3(const MatrixDbl &mx) : MatrixDbl(3, 3, mx.value()) {}
+    MatrixDbl3x3(const std::initializer_list<double> &values) :MatrixDbl(3, 3, values) {}
 
     static MatrixDbl3x3 unit()
     {
@@ -68,6 +69,9 @@ public:
         m_value[1] = y;
         m_value[2] = z;
     };
+
+    VectorDbl3(const std::initializer_list<double> &values) : VectorDbl(3, values) {}
+
     double x() const
     {
         assert(std::abs(m_value[2]) > std::numeric_limits<double>::epsilon());

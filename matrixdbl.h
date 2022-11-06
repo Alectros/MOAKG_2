@@ -2,6 +2,7 @@
 #define MATRIXDBL_H
 
 #include <cassert>
+#include <initializer_list>
 #include <limits>
 
 class MatrixDbl
@@ -62,6 +63,18 @@ public:
         m_value = static_cast<double *>(std::malloc(sizeof (double) * m_cols * m_rows));
         for(int i = 0; i < m_cols * m_rows; i++)
             m_value[i] = values[i];
+    }
+
+    MatrixDbl(const int rows, const int cols, const std::initializer_list<double> &values)
+    {
+        m_cols = cols;
+        m_rows = rows;
+        m_value = static_cast<double *>(std::malloc(sizeof (double) * m_cols * m_rows));
+        int index = 0;
+        for(auto it = values.begin(); it != values.end() && index < m_cols * m_rows; ++it) {
+            m_value[index] = *it;
+            ++index;
+        }
     }
 
     MatrixDbl(const MatrixDbl &another)
