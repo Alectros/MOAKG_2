@@ -71,6 +71,9 @@ public:
 
     VectorDbl3(const std::initializer_list<double> &values) : VectorDbl(3, values) {}
 
+    static double scalarImpl(const VectorDbl3 &v1, const VectorDbl3 &v2);
+    static VectorDbl3 vectorImpl(const VectorDbl3 &v1, const VectorDbl3 &v2);
+
     double x() const
     {
         assert(std::abs(m_value[2]) > std::numeric_limits<double>::epsilon());
@@ -84,6 +87,20 @@ public:
     }
 
 };
+
+inline double VectorDbl3::scalarImpl(const VectorDbl3 &v1, const VectorDbl3 &v2)
+{
+    return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+}
+
+inline VectorDbl3 VectorDbl3::vectorImpl(const VectorDbl3 &v1, const VectorDbl3 &v2)
+{
+    return {
+                v1[1] * v2[2] - v1[2] * v2[1],
+                v1[2] * v2[0] - v1[0] * v2[2],
+                v1[0] * v2[1] - v1[1] * v2[0]
+    };
+}
 
 inline MatrixDbl3x3 operator*(const MatrixDbl3x3 &mx1, const MatrixDbl3x3 &mx2)
 {

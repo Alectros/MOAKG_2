@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     camera2d.cpp \
+    camera3d.cpp \
     main.cpp \
     mainwindow.cpp \
     modelshell3d.cpp \
@@ -19,6 +20,7 @@ HEADERS += \
     affinetools2d.h \
     affinetools3d.h \
     camera2d.h \
+    camera3d.h \
     mainwindow.h \
     matrixdbl.h \
     modelShellImport.h \

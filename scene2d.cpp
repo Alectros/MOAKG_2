@@ -9,7 +9,7 @@
 
 Scene2D::Scene2D(QWidget *parent) : QDialog(parent)
 {
-    resize({m_camera.m_width, m_camera.m_height});
+    resize({m_camera.width(), m_camera.height()});
     m_actionRotationLeft = new QAction;
     m_actionRotationLeft->setShortcut(Qt::Key_Plus);
     addAction(m_actionRotationLeft);
@@ -72,12 +72,10 @@ void Scene2D::paintEvent(QPaintEvent *)
 void Scene2D::resizeEvent(QResizeEvent *event)
 {
     const QSize newSize = event->size();
-    const double relativeAr = (static_cast<double>(newSize.width()) * event->oldSize().height())
-            / (static_cast<double>(newSize.height()) * event->oldSize().width());
-    m_camera.m_height = newSize.height();
-    m_camera.m_width = newSize.width();
-    m_camera.m_T /= relativeAr;
-    m_camera.m_B /= relativeAr;
+//    const double relativeAr = (static_cast<double>(newSize.width()) * event->oldSize().height())
+//            / (static_cast<double>(newSize.height()) * event->oldSize().width());
+    m_camera.setHeight(newSize.height());
+    m_camera.setWidth(newSize.width());
 }
 
 void Scene2D::wheelEvent(QWheelEvent *event)
