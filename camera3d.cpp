@@ -143,14 +143,15 @@ void Camera3D::setProjectionType(const ProjectionType &projectionType)
         recalculateOrtograficMatrix();
 }
 
-VectorDbl3 Camera3D::eye() const
+VectorDbl4 Camera3D::eye() const
 {
-    return m_eye;
+    return {m_eye[0], m_eye[1], m_eye[2], 1};
 }
 
 void Camera3D::setEye(const VectorDbl3 &eye)
 {
     m_eye = eye;
+    m_eye.normilize();
     recalculateView();
 }
 
@@ -191,7 +192,6 @@ void Camera3D::recalculateView()
         m_eye[0], m_eye[1], m_eye[2], 0,
         0, 0, 0, 1
     };
-    printMatrix(m_view);
 }
 
 double Camera3D::F() const

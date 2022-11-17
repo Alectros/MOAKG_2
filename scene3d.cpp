@@ -28,9 +28,14 @@ Scene3D::Scene3D(QWidget *parent) : QDialog(parent)
     m_actionMoveDown = new QAction;
     m_actionMoveDown->setShortcut(Qt::Key_F);
     addAction(m_actionMoveDown);
+    m_actionResetCamera = new QAction;
+    m_actionResetCamera->setShortcut(Qt::Key_Home);
+    addAction(m_actionResetCamera);
 
     QFormLayout *layout = new QFormLayout;
     layout->addRow("Mouse wheel rotation", new QLabel("Camera focus changing"));
+    layout->addRow("Mouse move", new QLabel("Camera Rotation"));
+    layout->addRow("Home", new QLabel("Reset Camera"));
     layout->addRow("W, S", new QLabel("Move camera Forward or Back"));
     layout->addRow("A, D", new QLabel("Move camera Left or Right"));
     layout->addRow("R, F", new QLabel("Move camera Up or Down"));
@@ -43,6 +48,7 @@ Scene3D::Scene3D(QWidget *parent) : QDialog(parent)
     connect(m_actionMoveBack, &QAction::triggered, this, &Scene3D::moveCameraController);
     connect(m_actionMoveUp, &QAction::triggered, this, &Scene3D::moveCameraController);
     connect(m_actionMoveDown, &QAction::triggered, this, &Scene3D::moveCameraController);
+    connect(m_actionResetCamera, &QAction::triggered, this, &Scene3D::resetCamera);
 }
 
 void Scene3D::paintEvent(QPaintEvent *)
@@ -79,13 +85,13 @@ void Scene3D::wheelEvent(QWheelEvent *event)
 void Scene3D::mousePressEvent(QMouseEvent *event)
 {
     m_isMoving = true;
-    m_lastPos = event->pos();
+    m_firstPos = event->pos();
 }
 
 void Scene3D::mouseReleaseEvent(QMouseEvent *event)
 {
     m_isMoving = false;
-    m_lastPos = event->pos();
+    m_firstPos = event->pos();
 }
 
 void Scene3D::mouseMoveEvent(QMouseEvent *event)
@@ -93,21 +99,30 @@ void Scene3D::mouseMoveEvent(QMouseEvent *event)
     if (!m_isMoving)
         return;
     const QPoint currentPos = event->pos();
+    const double staticAngle = 30;
 
     VectorDbl3 v = m_camera.pxlToWorld(
                 {static_cast<double>(currentPos.x()),
                  static_cast<double>(currentPos.y()),
                  1.0}
                 ) - m_camera.pxlToWorld(
-                {static_cast<double>(m_lastPos.x()),
-                 static_cast<double>(m_lastPos.y()),
+                {static_cast<double>(m_firstPos.x()),
+                 static_cast<double>(m_firstPos.y()),
                  1.0}
                 );
     v[2] = 1;
-//    for(int i =0; i < m_models.size(); i++)
-//        m_models[i].addTransform(MatrixDbl3x3::translation(v.x(), v.y()));
+    v = v * staticAngle;
 
-    m_lastPos = event->pos();
+    const VectorDbl4 camPos = m_camera.position();
+
+    const VectorDbl4 currentEye =
+            MatrixDbl4x4::translation(camPos[0], camPos[1], camPos[2])
+            * MatrixDbl4x4::rotationY(v[0])
+            * MatrixDbl4x4::rotationX(v[1])
+            * MatrixDbl4x4::translation(-camPos[0], -camPos[1], -camPos[2])
+            * m_camera.eye();
+    m_camera.setEye(currentEye);
+    m_firstPos = currentPos;
     update();
 }
 
@@ -131,6 +146,12 @@ void Scene3D::setCamera(const Camera3D &camera)
     m_camera = camera;
 }
 
+void Scene3D::resetCamera()
+{
+    m_camera = Camera3D();
+    update();
+}
+
 void Scene3D::moveCameraController()
 {
     const double worldMove = 1e-1;
@@ -139,18 +160,20 @@ void Scene3D::moveCameraController()
     if (sender() == m_actionMoveLeft)
         moveCamera(-worldMove, 0 ,0);
     if (sender() == m_actionMoveForward)
-        moveCamera(0, 0, worldMove);
-    if (sender() == m_actionMoveBack)
         moveCamera(0, 0, -worldMove);
+    if (sender() == m_actionMoveBack)
+        moveCamera(0, 0, worldMove);
     if (sender() == m_actionMoveUp)
-        moveCamera(0, worldMove, 0);
-    if (sender() == m_actionMoveDown)
         moveCamera(0, -worldMove, 0);
+    if (sender() == m_actionMoveDown)
+        moveCamera(0, worldMove, 0);
     update();
 }
 
 void Scene3D::moveCamera(const double x, const double y, const double z)
 {
-    m_camera.addPosition({x, y, z});
+    const VectorDbl4 pos = m_camera.view() * VectorDbl4(x, y, z, 1);
+
+    m_camera.addPosition({pos.x(), pos.y(), pos.z()});
 }
 

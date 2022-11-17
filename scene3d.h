@@ -28,12 +28,13 @@ public:
     void setModel(const ModelShell3D &model);
     Camera3D camera() const;
     void setCamera(const Camera3D &camera);
+    void resetCamera();
 
 private:
     Camera3D m_camera;
     ModelShell3D m_model;
     bool m_isMoving = false;
-    QPoint m_lastPos;
+    QPoint m_firstPos;
 
     QAction *m_actionMoveLeft = nullptr;
     QAction *m_actionMoveRight = nullptr;
@@ -41,6 +42,7 @@ private:
     QAction *m_actionMoveBack = nullptr;
     QAction *m_actionMoveUp = nullptr;
     QAction *m_actionMoveDown = nullptr;
+    QAction *m_actionResetCamera = nullptr;
 
     void moveCameraController();
     void moveCamera(const double x, const double y, const double z);

@@ -52,7 +52,7 @@ public:
     ProjectionType projectionType() const;
     void setProjectionType(const ProjectionType &projectionType);
 
-    VectorDbl3 eye() const;
+    VectorDbl4 eye() const;
     void setEye(const VectorDbl3 &eye);
 
     VectorDbl3 vWorldUp() const;
