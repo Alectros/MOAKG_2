@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "scene2d.h"
+#include "scene3d.h"
 #include "modelshell3d.h"
 
 QT_BEGIN_NAMESPACE
@@ -24,7 +24,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    Scene2D *sceneDialog = new Scene2D(this);
+    Scene3D *sceneDialog = new Scene3D(this);
 
 };
 #endif // MAINWINDOW_H

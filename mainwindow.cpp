@@ -41,7 +41,7 @@ void MainWindow::importModel()
         QMessageBox::warning(this, "Import Error", "Couldn't import model");
         return;
     }
-    sceneDialog->addModel(model);
+    sceneDialog->setModel(model);
     ui->labelmModelName->setText(filename);
 }
 

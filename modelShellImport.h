@@ -47,7 +47,7 @@ bool importModelShellFromFile(const QString &filename, ModelShell3D &model, QStr
         model.addPoint(x / w, y / w, z / w);
     }
     stream >> sE;
-    for(int i = 0; i < sP; i++) {
+    for(int i = 0; i < sE; i++) {
         double p1, p2;
         stream >> p1 >> p2;
         model.addEdge(p1 - 1, p2 - 1);

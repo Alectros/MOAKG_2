@@ -1,5 +1,33 @@
 #include "camera3d.h"
 
+Camera3D::Camera3D()
+{
+    recalculatePerspectiveMatrix();
+    recalculateView();
+}
+
+VectorDbl4 Camera3D::worldToView(const VectorDbl4 &world) const
+{
+    return m_view * (world - m_position);
+}
+
+VectorDbl4 Camera3D::viewToClip(const VectorDbl4 &view) const
+{
+    return m_projection * view;
+}
+
+VectorDbl4 Camera3D::clipToWindow(const VectorDbl4 &clip) const
+{
+    const double x = clip.x() * m_width / 2.0 + m_width / 2.0;
+    const double y = clip.y() * m_height / 2.0 + m_height / 2.0;
+    return {x, y, 0.0, 1.0};
+}
+
+VectorDbl4 Camera3D::worldToWindow(const VectorDbl4 &world) const
+{
+    return clipToWindow(viewToClip(worldToView(world)));
+}
+
 void Camera3D::setL(const double L)
 {
     m_L = L;
@@ -74,10 +102,10 @@ void Camera3D::recalculateProjectWithNewF()
 {
     if (m_projectionType != ProjectionType::Perspective)
         return;
-    m_projection(2, 0) = (m_L + m_R) / ((m_R - m_L) * m_F);
-    m_projection(2, 1) = (m_B + m_T) / ((m_T - m_B) * m_F);
+    m_projection(0, 2) = (m_L + m_R) / ((m_R - m_L) * m_F);
+    m_projection(1, 2) = (m_B + m_T) / ((m_T - m_B) * m_F);
     m_projection(2, 2) = -1.0 * (2.0 * m_F + m_D) / (m_D * m_F);
-    m_projection(2, 3) = -1.0 * (2.0 * m_F + m_D) / (m_D * m_F);
+    m_projection(3, 2) = -1.0 / m_F;
 }
 
 void Camera3D::recalculateProjectWithNewD()
@@ -147,6 +175,12 @@ void Camera3D::setPosition(const VectorDbl4 &position)
     m_position = position;
 }
 
+void Camera3D::addPosition(const VectorDbl3 &move)
+{
+    for(int i = 0; i < 3; i++)
+        m_position[i] += move[i];
+}
+
 void Camera3D::recalculateView()
 {
     const VectorDbl3 right = VectorDbl3::vectorImpl(m_eye, m_vWorldUp);
@@ -157,6 +191,7 @@ void Camera3D::recalculateView()
         m_eye[0], m_eye[1], m_eye[2], 0,
         0, 0, 0, 1
     };
+    printMatrix(m_view);
 }
 
 double Camera3D::F() const

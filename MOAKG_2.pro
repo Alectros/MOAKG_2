@@ -14,7 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     modelshell3d.cpp \
-    scene2d.cpp
+    scene3d.cpp
 
 HEADERS += \
     affinetools2d.h \
@@ -25,7 +25,7 @@ HEADERS += \
     matrixdbl.h \
     modelShellImport.h \
     modelshell3d.h \
-    scene2d.h \
+    scene3d.h \
     vectordbl.h
 
 FORMS += \
