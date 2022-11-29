@@ -31,6 +31,12 @@ Scene3D::Scene3D(QWidget *parent) : QDialog(parent)
     m_actionResetCamera = new QAction;
     m_actionResetCamera->setShortcut(Qt::Key_Home);
     addAction(m_actionResetCamera);
+    m_actionRotateEdgeModelPls = new QAction;
+    m_actionRotateEdgeModelPls->setShortcut(Qt::CTRL + Qt::Key_Plus);
+    addAction(m_actionRotateEdgeModelPls);
+    m_actionRotateEdgeModelNeg = new QAction;
+    m_actionRotateEdgeModelNeg->setShortcut(Qt::CTRL + Qt::Key_Minus);
+    addAction(m_actionRotateEdgeModelNeg);
 
     QFormLayout *layout = new QFormLayout;
     layout->addRow("Mouse wheel rotation", new QLabel("Camera focus changing"));
@@ -39,6 +45,7 @@ Scene3D::Scene3D(QWidget *parent) : QDialog(parent)
     layout->addRow("W, S", new QLabel("Move camera Forward or Back"));
     layout->addRow("A, D", new QLabel("Move camera Left or Right"));
     layout->addRow("R, F", new QLabel("Move camera Up or Down"));
+    layout->addRow("CTRL +-", new QLabel("Rotate model around red edge"));
 
     setLayout(layout);
 
@@ -49,6 +56,8 @@ Scene3D::Scene3D(QWidget *parent) : QDialog(parent)
     connect(m_actionMoveUp, &QAction::triggered, this, &Scene3D::moveCameraController);
     connect(m_actionMoveDown, &QAction::triggered, this, &Scene3D::moveCameraController);
     connect(m_actionResetCamera, &QAction::triggered, this, &Scene3D::resetCamera);
+    connect(m_actionRotateEdgeModelPls, &QAction::triggered, this, &Scene3D::rotateAroundEdgeController);
+    connect(m_actionRotateEdgeModelNeg, &QAction::triggered, this, &Scene3D::rotateAroundEdgeController);
 }
 
 void Scene3D::paintEvent(QPaintEvent *)
@@ -56,7 +65,9 @@ void Scene3D::paintEvent(QPaintEvent *)
     QPainter painter(this);
     QPen pen(Qt::black);
     pen.setWidth(2);
-    painter.setPen(pen);
+    QPen penRed(Qt::red);
+    penRed.setWidth(2);
+    painter.setPen(penRed);
 
     for(int edgeInd = 0; edgeInd < m_model.edgesSize(); edgeInd++) {
         const int pointInd1 = m_model.edge(edgeInd).first;
@@ -64,6 +75,8 @@ void Scene3D::paintEvent(QPaintEvent *)
         const VectorDbl4 pPxl1 = m_camera.worldToWindow(m_model.transformedPoint(pointInd1));
         const VectorDbl4 pPxl2 = m_camera.worldToWindow(m_model.transformedPoint(pointInd2));
         painter.drawLine(pPxl1.x(), pPxl1.y(), pPxl2.x(), pPxl2.y());
+        if (edgeInd == 0)
+            painter.setPen(pen);
     }
 }
 
@@ -149,6 +162,7 @@ void Scene3D::setCamera(const Camera3D &camera)
 void Scene3D::resetCamera()
 {
     m_camera = Camera3D();
+    m_model.clearTransform();
     update();
 }
 
@@ -173,7 +187,44 @@ void Scene3D::moveCameraController()
 void Scene3D::moveCamera(const double x, const double y, const double z)
 {
     const VectorDbl4 pos = m_camera.view() * VectorDbl4(x, y, z, 1);
-
     m_camera.addPosition({pos.x(), pos.y(), pos.z()});
+}
+
+void Scene3D::rotateAroundEdgeController()
+{
+    const double rotateAngle = 10;
+    if (sender() == m_actionRotateEdgeModelPls)
+        rotateAroundEdge(rotateAngle);
+    if (sender() == m_actionRotateEdgeModelNeg)
+        rotateAroundEdge(-rotateAngle);
+    update();
+}
+
+void Scene3D::rotateAroundEdge(const double &angle)
+{
+    if(m_model.edgesSize() == 0)
+        return;
+    const int pointInd1 = m_model.edge(0).first;
+    const int pointInd2 = m_model.edge(0).second;
+    const VectorDbl4 p1 = m_model.transformedPoint(pointInd1);
+    const VectorDbl4 p2 = m_model.transformedPoint(pointInd2);
+    const VectorDbl4 edgeVector = (p2 - p1);
+    const VectorDbl3 normal = VectorDbl3(edgeVector[0], edgeVector[1], edgeVector[2]).normilized();
+
+    //! Поворот вокруг ребра осуществляется через, смену базиса
+    //! The rotation around the edge was carried out by changing the basis of the vectors
+
+    VectorDbl3 worldVector = {0, 1, 0};
+    if (std::abs(VectorDbl3::scalarImpl(worldVector, normal)) >= 1.0)
+        worldVector = {1, 0, 0};
+    const MatrixDbl4x4 view = MatrixDbl4x4::view(normal, worldVector);
+    const MatrixDbl4x4 viewTransposed = MatrixDbl4x4(view.transposed());
+
+    m_model.addTransform(
+                MatrixDbl4x4::translation(p1.x(), p1.y(), p1.z())
+                * viewTransposed
+               * MatrixDbl4x4::rotationZ(angle)
+                * view
+               * MatrixDbl4x4::translation(-p1.x(), -p1.y(), -p1.z()));
 }
 

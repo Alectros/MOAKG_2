@@ -47,7 +47,7 @@ public:
     {
         VectorDbl v(*this);
         const double l = length();
-        assert(std::abs(l) < std::numeric_limits<double>::epsilon());
+        assert(std::abs(l) > std::numeric_limits<double>::epsilon());
         for(int i = 0; i < m_rows; i++)
             v[i] /= l;
         return v;

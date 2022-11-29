@@ -5,6 +5,7 @@
 
 #include "matrixdbl.h"
 #include "vectordbl.h"
+#include "affinetools2d.h"
 
 
 class VectorDbl4 : public VectorDbl
@@ -98,20 +99,29 @@ public:
         return mx;
     }
 
-//    static MatrixDbl4x4 rotationAxe(const VectorDbl4 &normal, const double angle)
-//    {
-//        const VectorDbl4 n = normal.normilized();
-//        const double DEG_TO_RAD = M_PI / 180.0;
-//        const double cosA = std::cos(angle * DEG_TO_RAD);
-//        const double sinA = std::sin(angle * DEG_TO_RAD);
-//        MatrixDbl4x4 mx = {
-//            cosA * cosA + (1 - cosA) * n.x() * n.x(),
-
-
-
-//        }
-//        return mx;
-//    }
+    static MatrixDbl4x4 rotationAxe(const VectorDbl4 &normal, const double angle)
+    {
+        const VectorDbl4 n = VectorDbl4(normal[0], normal[1], normal[2], 0).normilized();
+        const double DEG_TO_RAD = M_PI / 180.0;
+        const double cosA = std::cos(angle * DEG_TO_RAD);
+        const double sinA = std::sin(angle * DEG_TO_RAD);
+        const double x = n[0];
+        const double x2 = x * x;
+        const double y = n[1];
+        const double y2 = y * y;
+        const double z = n[2];
+        const double z2 = z * z;
+        const double xy = x * y;
+        const double xz = x * z;
+        const double yz = y * z;
+        const MatrixDbl4x4 mx = {
+            cosA + (1 - cosA) * x2, (1 - cosA) * xy - sinA * z, (1 - cosA) * xz - sinA * y, 0,
+            (1 - cosA) * xy - sinA * z, cosA + (1 - cosA) * y2, (1 - cosA) * yz - sinA * x, 0,
+            (1 - cosA) * xz - sinA * y, (1 - cosA) * yz - sinA * x, cosA + (1 - cosA) * z2, 0,
+            0, 0, 0, 1
+        };
+        return mx;
+    }
 
     static MatrixDbl4x4 scale(const double x, const double y, const double z)
     {
@@ -129,6 +139,18 @@ public:
         mx(1, 1) *= isY ? -1 : 1;
         mx(2, 2) *= isZ ? -1 : 1;
         return mx;
+    }
+
+    static MatrixDbl4x4 view(const VectorDbl3 &front, const VectorDbl3 &worldUp)
+    {
+        const VectorDbl3 right = VectorDbl3::vectorImpl(front, worldUp).normilized();
+        const VectorDbl3 up = VectorDbl3::vectorImpl(front, right).normilized();
+        return {
+            right[0], right[1], right[2], 0,
+            up[0], up[1], up[2], 0,
+            front[0], front[1], front[2], 0,
+            0, 0, 0, 1
+        };
     }
 
 };

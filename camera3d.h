@@ -62,6 +62,9 @@ public:
     void setPosition(const VectorDbl4 &position);
     void addPosition(const VectorDbl3 &move);
 
+    VectorDbl3 eylers() const;
+    void setEylers(const VectorDbl3 &eylers);
+
 protected:
     MatrixDbl4x4 m_projection;
     ProjectionType m_projectionType = ProjectionType::Perspective;
@@ -70,6 +73,7 @@ protected:
 
     MatrixDbl4x4 m_view;
     VectorDbl4 m_position;
+    VectorDbl3 m_eylers = {0, 0, 0};//pitch,yaw,roll
 
     VectorDbl3 m_vWorldUp = {0, 1, 0};
     VectorDbl3 m_eye = {0, 0, -1};

@@ -182,16 +182,19 @@ void Camera3D::addPosition(const VectorDbl3 &move)
         m_position[i] += move[i];
 }
 
+VectorDbl3 Camera3D::eylers() const
+{
+    return m_eylers;
+}
+
+void Camera3D::setEylers(const VectorDbl3 &eylers)
+{
+    m_eylers = eylers;
+}
+
 void Camera3D::recalculateView()
 {
-    const VectorDbl3 right = VectorDbl3::vectorImpl(m_eye, m_vWorldUp);
-    const VectorDbl3 up = VectorDbl3::vectorImpl(m_eye, right);
-    m_view = {
-        right[0], right[1], right[2], 0,
-        up[0], up[1], up[2], 0,
-        m_eye[0], m_eye[1], m_eye[2], 0,
-        0, 0, 0, 1
-    };
+    m_view = MatrixDbl4x4::view(m_eye, m_vWorldUp);
 }
 
 double Camera3D::F() const

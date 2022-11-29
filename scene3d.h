@@ -43,9 +43,13 @@ private:
     QAction *m_actionMoveUp = nullptr;
     QAction *m_actionMoveDown = nullptr;
     QAction *m_actionResetCamera = nullptr;
+    QAction *m_actionRotateEdgeModelPls = nullptr;
+    QAction *m_actionRotateEdgeModelNeg = nullptr;
 
     void moveCameraController();
     void moveCamera(const double x, const double y, const double z);
+    void rotateAroundEdgeController();
+    void rotateAroundEdge(const double &angle);
 };
 
 #endif // SCENE3D_H
